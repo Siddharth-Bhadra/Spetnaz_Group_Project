@@ -9,13 +9,14 @@ pipeline {
             }
         }
 
-        stage('Test') {
+        stage('SAST - SonarQube Analysis') {
             steps {
-                echo 'Running tests...'
-                sh 'echo "Executing tests..."'
+                withSonarQubeEnv('SonarQube') {
+                    sh 'mvn sonar:sonar -Dsonar.projectKey=spetnaz'
+                }
             }
         }
-
+    
         stage('Deploy') {
             steps {
                 echo 'Deploying the application...'
