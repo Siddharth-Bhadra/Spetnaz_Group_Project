@@ -11,7 +11,7 @@ pipeline {
 
         stage('SAST - SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') {
+                withSonarQubeEnv('spetnaz') {
                     sh 'mvn sonar:sonar -Dsonar.projectKey=spetnaz'
                 }
             }
