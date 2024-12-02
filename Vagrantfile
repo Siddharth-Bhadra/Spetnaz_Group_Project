@@ -4,7 +4,8 @@ Vagrant.configure("2") do |config|
 
     # Setting up private network
     config.vm.network "private_network", ip: "192.168.56.101"
-    config.vm.network "forwarded_port", guest: 9090, host: 1234 # Prometheus port
+    config.vm.network "forwarded_port", guest: 9100, host: 1234 # Prometheus port
+    config.vm.network "private_network", type: "dhcp"
 
 
     # Allocating resources
@@ -20,6 +21,8 @@ Vagrant.configure("2") do |config|
         tar xvfz node_exporter-1.6.0.linux-amd64.tar.gz
         sudo mv node_exporter-1.6.0.linux-amd64/node_exporter /usr/local/bin/
         sudo useradd -rs /bin/false node_exporter
+        rm -rf node_exporter-1.6.0.linux-amd64*
+        nohup /usr/local/bin/node_exporter &
 
         # Create a systemd service for Node Exporter
         echo '[Unit]
