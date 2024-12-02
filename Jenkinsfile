@@ -10,7 +10,12 @@ pipeline {
                 sh 'echo "Compiling application..."'
             }
         }
-
+        stage('Provision Infrastructure') {
+            steps {
+                echo 'Provisioning infrastructure with Vagrant...'
+                sh 'vagrant up'
+            }
+        }
         stage('SAST - SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('spetnaz') {
