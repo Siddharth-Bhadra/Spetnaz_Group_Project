@@ -10,6 +10,12 @@ pipeline {
                 sh 'echo "Compiling application..."'
             }
         }
+        stage('Cleanup Infrastructure') {
+            steps {
+                echo 'Cleaning up infrastructure...'
+                sh 'vagrant destroy -f'
+            }
+        }
         stage('Provision Infrastructure') {
             steps {
                 echo 'Provisioning infrastructure with Vagrant...'
