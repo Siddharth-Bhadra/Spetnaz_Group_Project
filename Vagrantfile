@@ -4,6 +4,8 @@ Vagrant.configure("2") do |config|
 
     # Setting up private network
     config.vm.network "private_network", ip: "192.168.56.101"
+    config.vm.network "forwarded_port", guest: 9090, host: 9090 # Prometheus port
+
 
     # Allocating resources
     config.vm.provider "virtualbox" do |vb|
@@ -13,6 +15,31 @@ Vagrant.configure("2") do |config|
 
     config.vm.provision "shell", inline: <<-SHELL
         sudo apt-get update
+        sudo apt install -y wget
+        wget https://github.com/prometheus/node_exporter/releases/download/v1.6.0/node_exporter-1.6.0.linux-amd64.tar.gz
+        tar xvfz node_exporter-1.6.0.linux-amd64.tar.gz
+        sudo mv node_exporter-1.6.0.linux-amd64/node_exporter /usr/local/bin/
+        sudo useradd -rs /bin/false node_exporter
+
+        # Create a systemd service for Node Exporter
+        echo '[Unit]
+        Description=Prometheus Node Exporter
+        After=network.target
+
+        User=node_exporter
+        Group=node_exporter
+        Type=simple
+        ExecStart=/usr/local/bin/node_exporter
+
+        [Install]
+        WantedBy=multi-user.target' | sudo tee /etc/systemd/system/node_exporter.service
+
+        # Start Node Exporter
+        sudo systemctl daemon-reload
+        sudo systemctl start node_exporter
+        sudo systemctl enable node_exporter
+
+    
         sudo apt-get install -y apache2
 
         # Installing rsyslog for logging
