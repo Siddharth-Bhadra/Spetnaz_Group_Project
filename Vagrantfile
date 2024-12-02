@@ -4,7 +4,7 @@ Vagrant.configure("2") do |config|
 
     # Setting up private network
     config.vm.network "private_network", ip: "192.168.56.101"
-    config.vm.network "forwarded_port", guest: 9090, host: 9091 # Prometheus port
+    config.vm.network "forwarded_port", guest: 9091, host: 9091 # Prometheus port
 
 
     # Allocating resources
