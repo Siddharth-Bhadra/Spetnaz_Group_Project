@@ -7,13 +7,13 @@ Vagrant.configure("2") do |config|
 
     # Allocating resources
     config.vm.provider "virtualbox" do |vb|
-        vb.memory = "2048"
-        vb.cpus = 2
+        vb.memory = "512"
+        vb.cpus = 1
     end
 
     config.vm.provision "shell", inline: <<-SHELL
-        sudo apt update
-        sudo apt install -y apache2
+        sudo apt-get update
+        sudo apt-get install -y apache2
         sudo systemctl enable apache2
         sudo systemctl start apache2
     SHELL
