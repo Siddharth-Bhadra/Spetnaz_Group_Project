@@ -7,6 +7,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the application...'
+                sh 'sleep 160'
                 sh 'echo "Compiling application..."'
             }
         }
